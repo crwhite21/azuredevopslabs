@@ -1,5 +1,5 @@
 ---
-title: DevOps with Node.js, Team Services, and Azure App Service
+title: DevOps with Node.js, Azure DevOps, and Azure App Service
 layout: page
 sidebar: vsts
 permalink: /labs/vsts/nodejs/
@@ -8,11 +8,10 @@ folder: /labs/vsts/nodejs/
 
 ## Overview
 
-In this lab, we will present a scenario where Visual Studio Team Services (VSTS) can enable Node.js developers with continuous integration and deployment features. The scenario demonstrates how a Node.js developer using [Visual Studio Code](http://code.visualstudio.com) and various Azure-related VS Code extensions to create a new Azure App Service and use Git-based deployment. You'll learn how a Node.js developer can use VSTS to ensure that their code is deployed automatically to an Azure App Service when code is committed to a VSTS Git repository.
+In this lab, we will present a scenario where Azure DevOps can enable Node.js developers with continuous integration and deployment features. The scenario demonstrates how a Node.js developer using [Visual Studio Code](http://code.visualstudio.com) and various Azure-related VS Code extensions to create a new Azure App Service and use Git-based deployment. You'll learn how a Node.js developer can use Azure DevOps to ensure that their code is deployed automatically to an Azure App Service when code is committed to an Azure DevOps Git repository.
 
 ## Prerequisites
 
-1. If you don't already have a Visual Studio Dev Essentials and Visual Studio Team Services account, create one at [my.visualstudio.com](http://my.visualstudio.com).
 1. If you don't already have an Azure subscription, create one [here](https://azure.microsoft.com/en-us/free/).
 1. Install Git if you don't already have it installed.
 1. Install Node.js either by using the downloadable installers from [Node.js](https://nodejs.org) or using various command-line tools. Mac users can install Node.js using [Homebrew](https://brew.sh/) using the command `brew install node`.
@@ -26,45 +25,23 @@ In this lab, we will present a scenario where Visual Studio Team Services (VSTS)
 
 [Express](https://expressjs.com/) is a minimal, flexible web application framework for Node.js developers that provides a robust set of features for both web and mobile web developers. The [Express package](https://www.npmjs.com/package/express) is available via [NPM](https://www.npmjs.com/), easily installable into any Node.js application using the command `npm install express`. In most cases Express needn't be installed as a global package using the `-g` NPM switch, as the convention is that Express is installed independently into each Node.js app during development.
 
-This demo will walk you through the process of creating a new Node.js web app that uses Express. Then you'll create a new Visual Studio Team Services project to use for storing the code and continuously deploying the app to Azure App Service.
+This demo will walk you through the process of creating a new Node.js web app that uses Express. Then you'll create a new Azure DevOps project to use for storing the code and continuously deploying the app to Azure App Service.
 
-## Scaffolding a new Express app using Yeoman
+## Scaffolding a new Express app
 
-To ease the process of bootstrapping a Node.js Express application, developers can use the [Yeoman](http://yeoman.io) template engine. Yeoman - known as **yo** from it's NPM CLI command name - has hundreds of scaffolders for all sorts of projects. Luckilly, Yeoman is easilly installable as an NPM package just like Express and many other Node.js components.
+### Install the Express generator
 
-### Install Yeoman and the Express generator
-
-1. Run the command `npm install -g yo`.
-
-1. Type `yo` at the command prompt.
-
-    ![Installing generators](media/02-install-a-generator.png)
-
-1. Type `express` at the prompt and hit enter to search the Yeoman template database for Express-related scaffolders.
-
-    ![Searching for Express](media/03-find-express.png)
-
-1. Scroll through the list of results until you see the generator named, simply, **express**, and then hit enter.
-
-    ![Selecting the express template](media/04-express-selected.png)
+1. Run the command `npm install -g generator-express`.
 
 ### Generate a skeleton Express app
 
-1. In the command prompt, enter the command `yo express` to create a new Express application.
+1. In the command prompt, enter the command `express --view=pug myapp` to create a new Express application.
 
-    ![Generating an Express app](media/07-express-generator-options.png)
+    ![Generating an Express app](media/02-express-generator.png)
 
 1. Enter the command `code .` to start Visual Studio Code with the new Express app's folder open.
 
     ![Open VS Code from the prompt](media/08-code-command.png)
-
-1. Edit `gulpfile.js` to turn off local hosting during the Gulp build. The code for the `default` task should be commented out:
-
-    ```javascript
-    gulp.task('default', [
-        //'develop'
-    ]);
-    ```
 
 ## Create an Azure App Service using VS Code
 
@@ -110,30 +87,6 @@ To setup continuous deployment to an Azure App Service, an Azure App Service res
 
     ![Give the site a name](media/25-new-site-name.png)
 
-1. Create a new resource group for the App Service.
-
-    ![New resource group](media/26-new-resource-group.png)
-
-1. Give the new resource group a name.
-
-    ![New group name](media/26-resource-group-name.png)
-
-1. Select the geographic region from the menu.
-
-    ![Select region](media/27-select-region.png)
-
-1. Select the option for creating a new App Service Plan.
-
-    ![Create a new App Service Plan](media/28-new-app-service-plan.png)
-
-1. Give the new App Service Plan a name.
-
-    ![New App Service Plan name](media/29-new-app-service-plan-name.png)
-
-1. Select the tier of service.
-
-    ![Select the Basic tier](media/30-tier-of-app-service-plan.png)
-
 1. Select the Node.js version your app will need. VS Code will try to determine this for you but you have the option to choose your version.
 
     ![Select Node.js version](media/31-select-node-version.png)
@@ -160,27 +113,27 @@ To setup continuous deployment to an Azure App Service, an Azure App Service res
 
     ![App Service start page](media/30-start-page-in-browser.png)
 
-## Use Team Services to Enable Continuous Deployment
+## Use Azure DevOps to Enable Continuous Deployment
 
-Now that the app is ready to be deployed we'll set up a new Team Services project and set it up with Git so the code can be easily committed and continuously deployed.
+Now that the app is ready to be deployed we'll set up a new Azure DevOps project and set it up with Git so the code can be easily committed and continuously deployed.
 
-### Create the new Team Services Project
+### Create the new Azure DevOps Project
 
-1. Browse to your Team Services account at [https://{youraccount}.visualstudio.com](https://{youraccount}.visualstudio.com). Give the project a name and click **Create**.
+1. Browse to your Azure DevOps account at [https://dev.azure.com/{youraccount}](https://dev.azure.com/{youraccount}). Give the project a name and click **Create**.
 
-    ![New VSTS project](media/10-new-vsts-project.png)
+    ![New Azure DevOps project](media/10-new-devops-project.png)
 
 1. If you haven't already created Git credentials click the **Generate Git credentials** button, then provide a username and password to be used when interacting with this project. Then, click the **Copy clone url to clipboard** button as shown below.
 
     ![Copy Git URL](media/11-copy-clone-url.png)
 
-1. At a command prompt in your project's folder, type the command `git init` to initialize a new repository locally. Then, type `git remote add origin {copied URL}` to add the remote to your local repository. Then, `add` and `commit` the files to the repository. Finally, use `git push origin master` to push the Express app code up to the VSTS project's Git repository.
+1. At a command prompt in your project's folder, type the command `git init` to initialize a new repository locally. Then, type `git remote add origin {copied URL}` to add the remote to your local repository. Then, `add` and `commit` the files to the repository. Finally, use `git push origin master` to push the Express app code up to the Azure DevOps project's Git repository.
 
     ![Pushing code](media/12-git-commit.png)
 
-1. Click on the **Code** tab in your Team Services browser.
+1. Click on the **Files** tab in your Azure DevOps browser.
 
-    ![Code tab](media/13-code-displayed.png)
+    ![Files tab](media/13-code-displayed.png)
 
 ### Create the Build Definition
 
@@ -188,17 +141,29 @@ Now that the app is ready to be deployed we'll set up a new Team Services projec
 
     ![The new build definition button](media/14-click-the-button.png)
 
-1. Find the build template named **NodeJS with Gulp** and click the **Apply** button.
+1. Click **use the visual designer**.
 
-    ![Start with Gulp](media/15-start-with-gulp.png)
+    ![Where is your code?](media/use-the-visual-designer.png)
 
-1. Give the build definition the name `DevDeploy` and select **Hosted** from the **Default agent queue** menu.
+1. Select the repository you created earlier and click `Continue`.
 
-    ![Name the build](media/16-name-select-hosted.png)
+    ![Select a repository](media/select-your-repository.png)
 
-1. Click the **Copy Publish Artifact: drop** build task to see the details of this task.
+1. Search for `node` and select `Node.js with gulp`. Click `Apply`.
 
-    ![Drop file](media/17-drop-file.png)
+    ![Select the Node.js template](media/select-node-with-gulp.png)
+
+1. Choose `Hosted Ubuntu 1604` for the `Agent pool`.
+
+    ![Select Agent Pool](media/select-agent-pool.png)
+
+1. Remove `Run gulp task` and `Publish artifacts: drop` tasks.
+
+    ![Remove gulp task](media/remove-gulp-task.png)
+
+1. Click the **Archive files** build task to see the details of this task.
+
+    ![Drop file](media/check-archive-task.png)
 
 1. Click the **Add Task** button under the list of build tasks. Select the **Azure App Service Deploy** task and click the **Add** button next to it.
 
@@ -212,35 +177,49 @@ Now that the app is ready to be deployed we'll set up a new Team Services projec
 
     ![Select an Azure subscription](media/33-sub-menu.png)
 
+1. Change the **App Type** to **Linux Web App**.
+
+    ![Change App Type to Linux Web App](media/change-app-type-to-linux-web-app.png)
+
 1. Select the App Service you created earlier within VS Code to use as the deployment target for your Node.js source code.
 
     ![App selected](media/35-app-selected.png)
 
-1. Click the previous build task (the "Copy Publish Artifact: drop" task) and take note of the **Copy root** and **Contents** text boxes.
+1. Change **Image Source** to **Built-in image**.
+
+    ![Change Image Source](media/change-image-source.png)
+
+
+1. Click the previous build task (the **Archive files** task) and take note of the **Archive file to create** textbox. Once you've copied these two value and pasted them both into the Deploy build task, the value of the task's **Package or folder** textbox should represent the full path the ZIP file being built by your DevOps build.
 
     ![Copy the build file path](media/36-copy-build-file-path.png)
 
-1. Once you've copied these two value and pasted them both into the Deploy build task, the value of the task's **Package or folder** textbox should represent the full path the ZIP file being built by your VSTS build.
+1. Select **Node.js 8.1** for **Runtime Stack**.
 
-    ![Paste the drop file path](media/37-paste-build-file.png)
+    ![Choose Runtime Stack](media/choose-runtime-stack.png)
 
-1. Check the checkbox labelled **Generate Web.config** to enable that section of the task window. Then click the ellipse button next to the text box to open up the **Web.config parameters** dialog.
 
-    ![Web.config file changes](media/38-need-web-config-changes.png)
+1. Enter `npm start` in the **Startup command** textbox.
 
-1. Select **node** from the Web.config parameters screen's **Application framework** menu. Then, change the **NodeStartFile** value to be `app.js` since the Express app's default filename is `app.js`.
+    ![Enter Startup command](media/enter-startup-command.png)
 
-    ![Specify the Node.js start file](media/39-specify-app-js-filename.png)
+1. Click `Triggers`.
+
+    ![Click Triggers](media/click-triggers.png)
+
+1. Check `Enable Continuous Integration`.
+
+    ![Check Enable Continuous Integration](media/check-enable-continuous-integration.png)
 
 ### Run the Build
 
 Now the build definition is complete running it will result in the code being deployed to the Azure App Service.
 
-1. To kick off the manual build, click the **Save and Queue** spin button in the build definition page. Then, select the **Save and queue** option to save the definition and trigger the build.
+1. To kick off the manual build, click the **Save & queue** spin button in the build definition page. Then, select the **Save & queue** option to save the definition and trigger the build.
 
     ![Save and queue](media/40-save-and-queue.png)
 
-1. Click the **Queue** button on the **Queue build for deploy** dialog.
+1. Click the **Save & queue** button on the **Save build pipeline and queue** dialog.
 
     ![Queue window](media/41-queue-window.png)
 
@@ -256,53 +235,21 @@ Now the build definition is complete running it will result in the code being de
 
     ![Build completed](media/44-build-completed.png)
 
-1. Open up a browser (or refresh the already-open browser tab) on the App Service URL.
+1. Open up a browser (or refresh the already open browser tab) on the App Service URL.
 
     ![App deployed](media/45-app-deployed.png)
 
-### Enabling triggered builds
+### Triggering a build
 
-1. Click the **Triggers** tab in Team Services.
-
-    ![Enable build triggers](media/46-enable-trigger.png)
-
-1. Edit the code in `controllers/home.js` so that the `articles` variable in the `get` method is instantiated using the code below.
-
-    ```javascript
-    var articles = [
-        new Article({
-        'title': 'First Article',
-        'text' : 'This is the text of the first article'
-        }),
-        new Article({
-        'title': 'Second Article',
-        'text' : 'This is the text of the second article'
-        })
-    ];
-    ```
+1. Edit the code in `routes/index.js` so that the `title` property is `My Express App` on the `GET home page` route.
 
     ![Edit controller code](media/47-edit-controller-code.png)
-
-1. Edit the code in `view\index.handlebars` to add a `dl` list containing a presentation of the articles in the view model.
-
-    ```handlebars
-    {% raw %}
-    <dl>
-        {{#each articles}}
-        <dt>{{title}}</dt>
-        <dd>{{text}}</dd>
-        {{/each}}
-    </dl>
-    {% endraw %}
-    ````
-
-    ![Edit view code](media/48-edit-view-code.png)
 
 1. Commit the code to the repository.
 
     ![Commit to Git](media/49-commit-to-git.png)
 
-1. Go back to the build definition in Team Services and take note that a new build has been queued.
+1. Go back to the build definition in Azure DevOps and take note that a new build has been queued.
 
     ![New build queued](media/50-new-build-queued.png)
 
